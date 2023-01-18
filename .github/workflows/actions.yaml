@@ -1,0 +1,19 @@
+name: sample k8s testing application
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout action
+        uses: actions/checkout@v2
+
+      - name: docker login
+        run: docker login -u {{ $secrets.DOCKER_USERNAME }} -p {{ $secrets.DOCKER_PASSWORD }}
+
+      - name: run k8s folder
+        run:  kubectl apply -f k8s
+        
