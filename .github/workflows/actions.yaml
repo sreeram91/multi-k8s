@@ -12,8 +12,19 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker login
-        run: docker login -u {{ $secrets.DOCKER_USERNAME }} -p {{ $secrets.DOCKER_PASSWORD }}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: building the image
+        run: |-
+          docker build -t sreeram91/k8s-client -f ./client/Dockerfile ./client
+          docker build -t sreeram91/k8s-server -f ./server/Dockerfile ./server
+          docker build -t sreeram91/k8s-worker -f ./worker/Dockerfile ./worker
+
+      - name: push to hub
+        run: |-
+          docker push sreeram91/k8s-client
+          docker push sreeram91/k8s-server
+          docker push sreeram91/k8s-worker
 
       - name: run k8s folder
         run:  kubectl apply -f k8s
-        
