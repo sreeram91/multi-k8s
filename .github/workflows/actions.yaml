@@ -20,8 +20,9 @@ jobs:
 
       - name: configure kubeconfig
         run: |-
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yml
-          export KUBECONFIG=kubeconfig.yml
+          mkdir ${HOME}/. kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $ {HOME} /.kube/config
+          cat ${HOME}/.kube/config
 
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
