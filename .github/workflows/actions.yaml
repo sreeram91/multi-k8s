@@ -10,6 +10,16 @@ jobs:
     steps:
       - name: checkout action
         uses: actions/checkout@v2
+
+      - name: Install Minikube
+        run: |
+          VERSION=$(curl -L -s https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64)
+          curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+          && chmod +x minikube
+          sudo install minikube /usr/local/bin/
+        
+      - name: Start Minikube
+        run: minikube start --vm-driver=docker
       
       - name: setup kubectl
         run: |-
@@ -20,9 +30,8 @@ jobs:
 
       - name: configure kubeconfig
         run: |-
-          mkdir ${HOME}/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $ {HOME} /.kube/config
-          cat ${HOME}/.kube/config
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yml
+          export KUBECONFIG=kubeconfig.yml
 
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
