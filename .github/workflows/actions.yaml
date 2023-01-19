@@ -20,7 +20,7 @@ jobs:
 
       - name: configure kubeconfig
         run: |-
-          mkdir ${HOME}/. kube
+          mkdir ${HOME}/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $ {HOME} /.kube/config
           cat ${HOME}/.kube/config
 
